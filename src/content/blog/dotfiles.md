@@ -13,44 +13,39 @@ description:
 
 # Pourquoi versionner ses fichiers de configuration ?
 
-When you are switching from one computer to another all the time, it is not really convenient to copy manually your config files like your `.zshrc`, `vimrc` etc... There is plenty of solutions to automate this process but I adopted the one I saw in [this article](https://www.atlassian.com/git/tutorials/dotfiles).
-
-It is a nice one because the only tool you need is `git` (with a Github repository for example).
-
-For the following of this tutorial I will assume that you have `git` installed on a Unix-like operating system.
+Lorsque l'on change d'ordinateur ou de distribution régulièrement, ce n'est pas très convénient de copier ses fichiers de configuration à la main. Il existe un tas de solutions proposant d'automatiser le procédé cependant j'ai décidé d'utiliser celle que j'ai vu dans [cet article](https://www.atlassian.com/git/tutorials/dotfiles) car  je la trouve plutôt simple et élégante. Le seul outil nécessaire est `git` (avec un dépôt associé).
 
 # Mise en place
 
-First of all you nead a new git repository. I personally use Github for this but it is only a matter of choice.
-Then, assuming that your repository is named `dotfiles` we will use the following commands :
+Avant tout de chose il est nécessaire d'avoir `git` installé et d'avoir créé un dépôt sur la plateforme de son choix (Github de mon côté).
+
+On exécute ensuite les commandes :
 
 ```sh
 git init --bare ~/.dotfiles
 alias config='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 config config status.showUntrackedFiles no
-config remote add origin git@github.com:<git-username>/dotfiles.git
+config remote add origin <url-to-git-repository>
 ```
 
-Of course replace `<git-username>` with your own Github username. You can also put the second command into your `.bashrc` or `.zshrc` file for the persistence.
+La deuxième commande peut être insérée dans le fichier ou sont déclarés les alias sur notre machine pour la persistence (`.bashrc` ou `.zshrc` probablement).
 
-And that's all !
+Et c'est tout !
 
 # Réplication
 
-To replicate your configuration on another computer, simply use the following commands :
+Pour dupliquer la configuration sur une nouvelle machine on exécute les commandes :
 
 ```sh
 alias config='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-git clone --bare <git-repo-url> ~/.dotfiles
+git clone --bare <url-to-git-repository> ~/.dotfiles
 config checkout
 config config status.showUntrackedFiles no
 ```
 
-This time don't forget to replace `<git-repo-url>` with your repository url.
-
 # Au quotidien
 
-To store some dotfiles you can use the following commands :
+Les commandes `git` de base sont utilisées pour versionner les fichiers (ajout ou modification) mais en utilisant l'alias `config`  :
 
 ```sh
 config add <file>
@@ -58,10 +53,8 @@ config commit -m <message>
 config push
 ```
 
-To retrieve the modifications made on another computer, use :
+Pour récupérer les modifications effectuées sur un autre ordinateur, on exécute la commande :
 
 ```sh
 config pull
 ```
-
-In fact you can use every `git` command by replacing `git` with your `config` alias.
