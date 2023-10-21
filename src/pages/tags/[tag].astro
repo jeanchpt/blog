@@ -41,9 +41,9 @@ const sortTagsPost = getSortedPosts(tagPosts);
 <Layout title={`Tag:${tag} | ${SITE.title}`}>
   <Header activeNav="tags" />
   <Main
-    pageTitle={[`Tag:`, `${tag}`]}
+    pageTitle={[`Label:`, `${tag}`]}
     titleTransition={tag}
-    pageDesc={`All the articles with the tag "${tag}".`}
+    pageDesc={`Tous les articles avec le label "${tag}".`}
   >
     <h1 slot="title" transition:name={tag}>{`Tag:${tag}`}</h1>
     <ul>

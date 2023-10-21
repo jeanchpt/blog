@@ -25,6 +25,9 @@ pnpm-debug.log*
 # ignore Jampack cache files
 .jampack/
 
+# ignore .husky directory
+.husky
+
 # yarn
 .yarn/*
 !.yarn/patches

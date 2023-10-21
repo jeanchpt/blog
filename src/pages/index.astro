@@ -23,7 +23,7 @@ const socialCount = SOCIALS.filter(social => social.active).length;
   <Header />
   <main id="main-content">
     <section id="hero">
-      <h1 class="mr-2">Mingalaba</h1>
+      <h1 class="mr-2">Bienvenue</h1>
       <a
         target="_blank"
         href="/rss.xml"
@@ -41,12 +41,9 @@ const socialCount = SOCIALS.filter(social => social.active).length;
       </a>
 
       <p>
-        AstroPaper is a minimal, responsive, accessible and SEO-friendly Astro
-        blog theme. This theme follows best practices and provides accessibility
-        out of the box. Light and dark mode are supported by default. Moreover,
-        additional color schemes can also be configured.
+        Ceci est mon site personel.
       </p>
-      <p>
+      <!-- <p>
         Read the blog posts or check
         <LinkButton
           className="hover:text-skin-accent underline underline-offset-4 decoration-dashed"
@@ -54,7 +51,7 @@ const socialCount = SOCIALS.filter(social => social.active).length;
         >
           README
         </LinkButton> for more info.
-      </p>
+      </p> -->
       {
         // only display if at least one social link is enabled
         socialCount > 0 && (
@@ -72,7 +69,7 @@ const socialCount = SOCIALS.filter(social => social.active).length;
       featuredPosts.length > 0 && (
         <>
           <section id="featured">
-            <h2>Featured</h2>
+            <h2>Articles à la une</h2>
             <ul>
               {featuredPosts.map(({ data }) => (
                 <Card
@@ -89,7 +86,7 @@ const socialCount = SOCIALS.filter(social => social.active).length;
     }
 
     <section id="recent-posts">
-      <h2>Recent Posts</h2>
+      <h2>Articles récents</h2>
       <ul>
         {
           sortedPosts
@@ -108,7 +105,7 @@ const socialCount = SOCIALS.filter(social => social.active).length;
       </ul>
       <div class="all-posts-btn-wrapper">
         <LinkButton href="/posts">
-          All Posts
+          Tous les articles
           <svg xmlns="http://www.w3.org/2000/svg"
             ><path
               d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z"
