@@ -1,23 +1,12 @@
 ---
-import { getCollection } from "astro:content";
+import { SITE } from "@config";
 import Layout from "@layouts/Layout.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
-import Card from "@components/Card";
-import getSortedPosts from "@utils/getSortedPosts";
-import slugify from "@utils/slugify";
-import { SOCIALS } from "@config";
 import Main from "@layouts/Main.astro";
-
-const posts = await getCollection("blog");
-
-const sortedPosts = getSortedPosts(posts);
-const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
-
-const socialCount = SOCIALS.filter(social => social.active).length;
 ---
 
-<Layout>
+<Layout title={`CTF | ${SITE.title}`}>
   <Header activeNav="ctf" />
   <Main pageTitle="CTF" pageDesc="A propos de l'équipe de CTF.">
     <p>Avec un groupe d'amis de l'université ayant la même passion que moi, nous nous sommes rassemblés et avons décidé de monter notre propre équipe de CTF (capture de drapeau en bon français).</p>
