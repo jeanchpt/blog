@@ -11,11 +11,11 @@ description:
   Ma méthode pour facilement sauvegarder et répliquer des fichiers de configuration sous Linux.
 ---
 
-# Pourquoi versionner ses fichiers de configuration ?
-
 Lorsque l'on change d'ordinateur ou de distribution régulièrement, ce n'est pas très convénient de copier ses fichiers de configuration à la main. Il existe un tas de solutions proposant d'automatiser le procédé cependant j'ai décidé d'utiliser celle que j'ai vu dans [cet article](https://www.atlassian.com/git/tutorials/dotfiles) car  je la trouve plutôt simple et élégante. Le seul outil nécessaire est `git` (avec un dépôt associé).
 
-# Mise en place
+## Table des matières
+
+## Mise en place
 
 Avant tout de chose il est nécessaire d'avoir `git` installé et d'avoir créé un dépôt sur la plateforme de son choix (Github de mon côté).
 
@@ -32,7 +32,7 @@ La deuxième commande peut être insérée dans le fichier ou sont déclarés le
 
 Et c'est tout !
 
-# Réplication
+## Réplication
 
 Pour dupliquer la configuration sur une nouvelle machine on exécute les commandes :
 
@@ -43,7 +43,7 @@ config checkout
 config config status.showUntrackedFiles no
 ```
 
-# Au quotidien
+## Au quotidien
 
 Les commandes `git` de base sont utilisées pour versionner les fichiers (ajout ou modification) mais en utilisant l'alias `config`  :
 
