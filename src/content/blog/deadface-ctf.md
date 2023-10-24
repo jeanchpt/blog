@@ -1,6 +1,6 @@
 ---
 author: Jean Chaput
-pubDatetime: 2023-10-21T7:22:00Z
+pubDatetime: 2023-10-24T21:36:00Z
 title: Write-up Deadface CTF
 postSlug: deadface-ctf
 featured: true
@@ -11,6 +11,8 @@ tags:
 description:
   Write-up de la Deadface CTF du 20 et 21 octobre 2023
 ---
+
+La Deadface CTF s'est déroulée les 20 et 21 octobre 2023 et je propose ici une correction de quelques épreuves. D'autres corrections seront proposées par un coéquipier sur [ce site web](https://www.enzo-cadoni.fr).
 
 ## Table des matières
 
@@ -49,9 +51,42 @@ Il est probable que le mot de passe entré dans le terminal lors de l'exécution
 
 ## Traffic analysis
 
-### Sometimes it lets you down
-
 ### Git rekt
+
+Ce défi propose d'analyser une capture réseau pour essayer de retrouver le mot de passe de l'utilisateur `spookyboi` qui se serait fait avoir par une campagne de phishing. On commence par ouvrir la capture avec `wireshark` et on se rend compte que celle-ci contient énormément de paquets et de protocoles différents. 
+
+Puisque le mot de passe recherché aurait été envoyé en réponse à une campagne de phishing, il est probable que cela se soit produit via une interface web alors on peut essayer de filtrer les paquets `HTTP` ainsi que la méthode `POST`. Cela se fait avec le filtre `http.request.method == "POST"`.
+
+Il ne reste plus qu'un seul paquet dans la liste et quand on l'exporte au format texte  on a le résultat suivant :
+
+```md
+No.     Time           Source                Destination           Protocol Length Info
+   3240 1593.789095    165.227.73.138        147.182.253.207       HTTP     1200   POST /session HTTP/1.1  (application/x-www-form-urlencoded)
+
+Frame 3240: 1200 bytes on wire (9600 bits), 1200 bytes captured (9600 bits)
+Ethernet II, Src: fe:00:00:00:01:01 (fe:00:00:00:01:01), Dst: 02:50:e8:ba:d7:30 (02:50:e8:ba:d7:30)
+Internet Protocol Version 4, Src: 165.227.73.138, Dst: 147.182.253.207
+Transmission Control Protocol, Src Port: 41336, Dst Port: 80, Seq: 1, Ack: 1, Len: 1134
+Hypertext Transfer Protocol
+HTML Form URL Encoded: application/x-www-form-urlencoded
+    Form item: "commit" = "Sign in"
+    Form item: "authenticity_token" = "itYs+HLxxadKOu/LcUSIlVEkCT0DBQ6EwYw2TO0D28Za9lQoiAGqbgjQ0p2IewNCvvtRkN0XcJrK5Me1ndYRvw=="
+    Form item: "login" = "spookyboi@deadface.io"
+    Form item: "password" = "SpectralSecrets#2023"
+    Form item: "webauthn-conditional" = "undefined"
+    Form item: "javascript-support" = "true"
+    Form item: "webauthn-support" = "unsupported"
+    Form item: "webauthn-iuvpaa-support" = "unsupported"
+    Form item: "return_to" = "https://github.com/login"
+    Form item: "allow_signup" = ""
+    Form item: "client_id" = ""
+    Form item: "integration" = ""
+    Form item: "required_field_826d" = ""
+    Form item: "timestamp" = "1696980020598"
+    Form item: "timestamp_secret" = "701122f4b577941e1c787414ea0775e8cd9e974f8c5b46eceff028a721e9d713"
+```
+
+On voit ici clairement le mot de passe transmit et on a par conséquent le flag suivant : `flag{SpectralSecrets#2023}`
 
 ### Creepy crawling
 
@@ -125,4 +160,18 @@ Il paraît évident à ce moment là que l'on récupère l'addresse du porte mon
 
 ### Host busters 1
 
+Pour cette épreuve nous disposons d'un acces SSH à `vim@gh0st404.deadface.io` avec le mot de passe `letmevim`. Lorsque l'on se connecte, il semble que l'on ne se retrouve pas dans un shell classique mais plûtot dans un `vim`. Si l'on essaye simplement d'en sortir avec la commande `:q`, on se déconnecte du SSH. 
+
+Il se trouve que `vim` s'exécute dans un terminal ou il peut exécuter les commandes que l'utilisateur lui donne avec la commande `:!` suivi de n'importe quelle instruction. On peut donc par exemple taper `:!bash`.
+
+Cela nous ouvre un shell bash qui se trouve être directement dans le répertoire de l'utilisateur `vim` ou l'on était censé chercher quelque chose. On liste donc le contenu du répertoire avec `ls` et on découvre qu'un fichier `hostbusters1.txt` s'y trouve. Le flag est donc `flag{esc4P3_fr0m_th3_V1M}`.
+
 ### Tin balloon
+
+Cette fois-ci on récupère une archive contenant un fichier `Untitlednosubject.docx` protégé par mot de passe ainsi qu'un fichier MP3. En écoutant le MP3 pendant que l'on essaye de trouver une solution pour le mot de passe, on se rend compte qu'il y a des sons étranges autour de 3 minutes 15. 
+
+On ouvre donc le fichier avec `audacity` et on affiche le spectrogramme avant de zoomer sur la partie qui nous intéresse. On découvre alors ceci :
+
+![Spectrogramme](@assets/images/spectrogram.png)
+
+Il s'agit évidemment du mot de passe du fichier ou se trouve le nom de l'exécutable. On en déduit le flag : `flag{Wh1t3_N01Z3.exe}`
