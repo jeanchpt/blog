@@ -18,6 +18,8 @@ description:
 
 ### DumpCyber
 
+Pour cette épreuve de forensics, on démarre avec une image disque d'un système inconnu. Pour commencer, on peut 
+
 ```sh
 sudo vol -f disk_image.raw windows.filescan.FileScan > files.txt
 cat files.txt | grep '\\Users'
@@ -73,6 +75,7 @@ Déchiffré :
 Cyberchef mode CBC/NoPadding
 
 ## Cryptographie
+
 ### Random_key
 
 Le Cyberchef
