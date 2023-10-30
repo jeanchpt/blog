@@ -49,6 +49,26 @@ Xen0M0rphMell0wz
 
 Il est probable que le mot de passe entré dans le terminal lors de l'exécution du programme soit comparé avec une chaîne de caractères et celle-ci pourrait bien être `Xen0M0rphMell0wz`. On relance donc le programme en entrant la chaîne précédemment trouvée lorsque le mot de passe est demandé. Bingo c'est le flag : `flag{XENO-DO-DO-DO-DO-DO-DOOOOO}`.
 
+## Steganographie
+
+### You've been ransomwared
+
+On nous propose dans cette épreuve de retrouver le pseudonyme de l'attaquant ayant effectué une attaque par rançongiciel. Pour cela, nous avons l'image suivante à disposition :
+
+![Rançongiciel](@assets/images/deadface-ctf-23/ransomwared.png)
+
+Lorsque l'on regarde l'image de très près, il semble que l'on puisse distinguer du texte tout en bas de celle-ci écrit en rouge sur fond rouge. Pour plus de lisibilité, on peut ouvrir l'image avec `Gimp` et jouer avec la balance des couleurs. Cela nous donne l'image suivante :
+
+![Rançongiciel](@assets/images/deadface-ctf-23/filtered-ransomware.png)
+
+En saisissant le texte mis en évidence dans un traducteur de binaire, on obtient :
+
+```md
+This ransomware brought to you by mirveal.
+```
+
+On a donc le flag : `flag{mirveal}`
+
 ## Traffic analysis
 
 ### Git rekt
@@ -172,6 +192,6 @@ Cette fois-ci on récupère une archive contenant un fichier `Untitlednosubject.
 
 On ouvre donc le fichier avec `audacity` et on affiche le spectrogramme avant de zoomer sur la partie qui nous intéresse. On découvre alors ceci :
 
-![Spectrogramme](@assets/images/spectrogram.png)
+![Spectrogramme](@assets/images/deadface-ctf-23/spectrogram.png)
 
 Il s'agit évidemment du mot de passe du fichier ou se trouve le nom de l'exécutable. On en déduit le flag : `flag{Wh1t3_N01Z3.exe}`
