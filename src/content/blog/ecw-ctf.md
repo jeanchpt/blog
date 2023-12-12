@@ -3,7 +3,7 @@ author: Jean Chaput
 pubDatetime: 2023-10-30T10:53:00Z
 title: Write-up ECW CTF
 postSlug: ecw-ctf
-featured: true
+featured: false
 draft: false
 tags:
   - ctf

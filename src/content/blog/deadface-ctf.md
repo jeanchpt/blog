@@ -3,7 +3,7 @@ author: Jean Chaput
 pubDatetime: 2023-10-24T21:36:00Z
 title: Write-up Deadface CTF
 postSlug: deadface-ctf
-featured: true
+featured: false
 draft: false
 tags:
   - ctf
