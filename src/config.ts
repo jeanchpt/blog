@@ -21,6 +21,18 @@ export const LOGO_IMAGE = {
 
 export const SOCIALS: SocialObjects = [
   {
+    name: "TryHackMe",
+    href: "https://tryhackme.com/p/jeanchpt",
+    linkTitle: `${SITE.title} on TryHackMe`,
+    active: true,
+  },
+  {
+    name: "RootMe",
+    href: "https://www.root-me.org/jeanchpt",
+    linkTitle: `${SITE.title} on RootMe`,
+    active: true,
+  },
+  {
     name: "Github",
     href: "https://github.com/JeanChpt/",
     linkTitle: ` ${SITE.title} on Github`,
@@ -46,7 +58,7 @@ export const SOCIALS: SocialObjects = [
   },
   {
     name: "Mail",
-    href: "mailto:jean.chaput@protonmail.com",
+    href: "mailto:email.canning988@passmail.net",
     linkTitle: `Send an email to ${SITE.title}`,
     active: true,
   },

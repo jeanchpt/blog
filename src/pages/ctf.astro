@@ -9,11 +9,15 @@ import Main from "@layouts/Main.astro";
 <Layout title={`CTF | ${SITE.title}`}>
   <Header activeNav="ctf" />
   <Main pageTitle="CTF" pageDesc="A propos de l'équipe de CTF.">
-    <p>Avec un groupe d'amis de l'université ayant la même passion que moi, nous nous sommes rassemblés et avons décidé de monter notre propre équipe de CTF (capture de drapeau en bon français).</p>
+    <p>Avec un groupe d'amis de l'université ayant la même passion que moi, nous nous sommes rassemblés et avons décidé de monter notre propre équipe de CTF.</p>
+    <br />
+    <p>Vous pouvez nous retrouver sur <a href="https://ctftime.org/team/274035">CTF Time</a> ou sur <a href="https://www.majorleaguecyber.org/teams/systemctf">Major League Cyber</a>.</p>
   </Main>
   <Footer />
 </Layout>
 
 <style>
-
+  a {
+    @apply font-bold underline hover:text-skin-accent;
+  }
 </style>
