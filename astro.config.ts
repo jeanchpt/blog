@@ -21,7 +21,7 @@ export default defineConfig({
       [
         remarkToc,
         {
-          heading: 'Table des matières'
+          heading: 'Table of contents'
         },
       ],
     ],
