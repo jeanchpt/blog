@@ -4,14 +4,14 @@ import Hr from "./Hr.astro";
 import LinkButton from "./LinkButton.astro";
 
 export interface Props {
-  activeNav?: "articles" | "ctf" | "tags" | "recherche";
+  activeNav?: "posts" | "ctf" | "tags" | "search";
 }
 
 const { activeNav } = Astro.props;
 ---
 
 <header>
-  <a id="skip-to-content" href="#main-content">Lire la suite</a>
+  <a id="skip-to-content" href="#main-content">Read more</a>
   <div class="nav-container">
     <div class="top-nav-wrap">
       <a href="/" class="logo whitespace-nowrap">
@@ -58,8 +58,8 @@ const { activeNav } = Astro.props;
         </button>
         <ul id="menu-items" class="display-none sm:flex">
           <li>
-            <a href="/articles" class={activeNav === "articles" ? "active" : ""}>
-              Articles
+            <a href="/posts" class={activeNav === "posts" ? "active" : ""}>
+              Posts
             </a>
           </li>
           <li>
@@ -68,18 +68,18 @@ const { activeNav } = Astro.props;
             </a>
           </li>
           <li>
-            <a href="/labels" class={activeNav === "tags" ? "active" : ""}>
-              Labels
+            <a href="/tags" class={activeNav === "tags" ? "active" : ""}>
+              Tags
             </a>
           </li>
           <li>
             <LinkButton
-              href="/recherche"
+              href="/search"
               className={`focus-outline p-3 sm:p-1 ${
-                activeNav === "recherche" ? "active" : ""
+                activeNav === "search" ? "active" : ""
               } flex`}
               ariaLabel="search"
-              title="Recherche"
+              title="Search"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

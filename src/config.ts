@@ -3,14 +3,14 @@ import type { Site, SocialObjects } from "./types";
 export const SITE: Site = {
   website: "https://jeanchaput.fr/", // replace this with your deployed domain
   author: "Jean Chaput",
-  desc: "Site web et blog personel.",
+  desc: "My personal website and blog.",
   title: "Jean Chaput",
   ogImage: "astropaper-og.jpg",
   lightAndDarkMode: true,
   postPerPage: 3,
 };
 
-export const LOCALE = ["fr-FR"]; // set to [] to use the environment default
+export const LOCALE = ["en-US"]; // set to [] to use the environment default
 
 export const LOGO_IMAGE = {
   enable: true,

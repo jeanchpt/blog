@@ -4,7 +4,7 @@ import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import Layout from "@layouts/Layout.astro";
 import Main from "@layouts/Main.astro";
-import Tag from "@components/Labels.astro";
+import Tag from "@components/Tag.astro";
 import getUniqueTags from "@utils/getUniqueTags";
 import { SITE } from "@config";
 
@@ -15,7 +15,7 @@ let tags = getUniqueTags(posts);
 
 <Layout title={`Tags | ${SITE.title}`}>
   <Header activeNav="tags" />
-  <Main pageTitle="Labels" pageDesc="Tous les labels utilisés dans les articles.">
+  <Main pageTitle="Tags" pageDesc="Every tags I use into my posts">
     <ul>
       {tags.map(tag => <Tag name={tag} size="lg" />)}
     </ul>

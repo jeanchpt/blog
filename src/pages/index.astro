@@ -23,7 +23,7 @@ const socialCount = SOCIALS.filter(social => social.active).length;
   <Header />
   <main id="main-content">
     <section id="hero">
-      <h1 class="mr-2">Bienvenue</h1>
+      <h1 class="mr-2">Welcome</h1>
       <a
         target="_blank"
         href="/rss.xml"
@@ -41,7 +41,7 @@ const socialCount = SOCIALS.filter(social => social.active).length;
       </a>
 
       <p>
-        Passionné par la sécurité informatique et actuellement en train de terminer mon Master 2 dans le domaine, je met mon temps à profit pour acquérir de nouvelles compétences. Ce blog existe pour garder une trace sur mes recherches et travaux dans le domaine.
+        Passionate about computer sciences and cybersecurity and currently in the last year of a master's degree, I enjoy spending my free time learning new things. This blog was created to keep track of all the stuff I do in the domain.
       </p>
       <!-- <p>
         Read the blog posts or check
@@ -56,7 +56,7 @@ const socialCount = SOCIALS.filter(social => social.active).length;
         // only display if at least one social link is enabled
         socialCount > 0 && (
           <div class="social-wrapper">
-            <div class="social-links">Me retrouver sur :</div>
+            <div class="social-links">Find me on :</div>
             <Socials />
           </div>
         )
@@ -69,11 +69,11 @@ const socialCount = SOCIALS.filter(social => social.active).length;
       featuredPosts.length > 0 && (
         <>
           <section id="featured">
-            <h2>Articles à la une</h2>
+            <h2>Featured posts</h2>
             <ul>
               {featuredPosts.map(({ data }) => (
                 <Card
-                  href={`/articles/${slugify(data)}`}
+                  href={`/posts/${slugify(data)}`}
                   frontmatter={data}
                   secHeading={false}
                 />
@@ -86,7 +86,7 @@ const socialCount = SOCIALS.filter(social => social.active).length;
     }
 
     <section id="recent-posts">
-      <h2>Articles récents</h2>
+      <h2>Recent posts</h2>
       <ul>
         {
           sortedPosts
@@ -95,7 +95,7 @@ const socialCount = SOCIALS.filter(social => social.active).length;
               ({ data }, index) =>
                 index < 4 && (
                   <Card
-                    href={`/articles/${slugify(data)}`}
+                    href={`/posts/${slugify(data)}`}
                     frontmatter={data}
                     secHeading={false}
                   />
@@ -104,8 +104,8 @@ const socialCount = SOCIALS.filter(social => social.active).length;
         }
       </ul>
       <div class="all-posts-btn-wrapper">
-        <LinkButton href="/articles">
-          Tous les articles
+        <LinkButton href="/posts">
+          All posts
           <svg xmlns="http://www.w3.org/2000/svg"
             ><path
               d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z"

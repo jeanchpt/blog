@@ -1,7 +1,7 @@
 ---
 author: Jean Chaput
 pubDatetime: 2023-10-30T10:53:00Z
-title: Write-up ECW CTF
+title: ECW CTF Write-up
 postSlug: ecw-ctf
 featured: false
 draft: false
@@ -9,24 +9,24 @@ tags:
   - ctf
   - write-up
 description:
-  Write-up de la ECW CTF
+  Write-up for the ECW CTF (October 13 to 29, 2023)
 ---
 
-La ECW CTF s'est déroulée du 13 au 29 octobre 2023 et je propose ici une correction de deux épreuves. Plus de corrections seront proposées par un coéquipier sur [ce site web](https://www.enzo-cadoni.fr). La découverte tardive du déroulé de ces qualifications en pleine période de projet universitaire ne m'aura pas permis d'en faire plus.
+The ECW CTF took place from October 13 to 29, 2023. I offer here a correction of two challenges. More corrections will be offered by a teammate on [this website](https://www.enzo-cadoni.fr). The late discovery of these qualifications in the middle of a university project did not allow me to do more.
 
-## Table des matières
+## Table of contents
 
 ## Forensics
 
 ### DumpCyber
 
-Pour cette épreuve de forensics, on démarre avec une image disque d'un système inconnu. Pour commencer, on peut essayer d'en savoir plus sur le système d'où provient l'image en question :
+For this forensics challenge, we start with a disk image of an unknown system. To begin with, we can try to find out more about the system from which the image in question comes from :
 
 ```sh
 sudo ~/Tools/volatility3-2.5.0/vol.py -f task.raw windows.info
 ```
 
-Le résultat affiché est le suivant.
+We have the following result :
 
 ```md
 Volatility 3 Framework 2.5.0
@@ -57,19 +57,19 @@ PE Machine	34404
 PE TimeDateStamp	Sat Nov 20 09:30:02 2010
 ```
 
-Étant donné qu'il s'agit d'une image disque windows, on peut utiliser le module `windows.filescan.FileScan` pour en lister les fichiers. Pour plus de simplicité, on redirige la sortie vers un fichier texte que l'on pourra parcourir par la suite :
+Since this is a Windows disk image, you can use the `windows.filescan.FileScan` module to list its files. For simplicity's sake, we'll redirect the output to a text file that can be browsed later :
 
 ```sh
 sudo ~/Tools/volatility3-2.5.0/vol.py -f task.raw windows.filescan.FileScan > files.txt
 ```
 
-Maintenant que l'on a une liste des fichiers contenus dans le système, on a envie d'aller voir du côté des répertoires utilisateurs car c'est souvent ici que l'on trouve des choses intéressantes. Pour cela, on liste le répertoire utilisateur comme suit :
+Now that we have a list of the files contained in the filesystem, we want to look out to the user's directories. To do this, we list the user directory as follows :
 
 ```sh
 cat files.txt | grep '\\Users'
 ```
 
-On se rend compte qu'il y a un seul utilisateur `vboxuser` et en parcourant un peu ses fichiers il semble qu'il y ai des choses prometteuses sur son bureau. On liste donc le contenu de celui-ci :
+We realize that there's only one user, `vboxuser`, and by browsing through his files, it seems that there are some promising things on his desktop. So we list its contents :
 
 ```sh
 cat files.txt | grep '\\Users\\vboxuser\\Desktop\\'
@@ -88,7 +88,7 @@ cat files.txt | grep '\\Users\\vboxuser\\Desktop\\'
 0x3fd737b0	\Users\vboxuser\Desktop\deesktop.ini	216
 ```
 
-Maintenant que l'on dispose d'une liste de fichiers et de leurs adresses, on peut procéder à la récupération de ceux-ci :
+Now that we have a list of files and their addresses, we can proceed to retrieve them :
 
 ```sh
 sudo ~/Tools/volatility3-2.5.0/vol.py -f task.raw -o ./ windows.dumpfiles.DumpFiles --physaddr 0x3fab94a0
@@ -96,7 +96,7 @@ sudo ~/Tools/volatility3-2.5.0/vol.py -f task.raw -o ./ windows.dumpfiles.DumpFi
 sudo ~/Tools/volatility3-2.5.0/vol.py -f task.raw -o ./ windows.dumpfiles.DumpFiles --physaddr 0xef58430
 ```
 
-Étant donné qu'il s'agit de fichiers `.rar`, on procède à leur extraction :
+Since these are `.rar` files, we proceed to extract them :
 
 ```sh
 unrar x file.txt.rar
@@ -104,22 +104,22 @@ unrar x generator.rar
 unrar x file.rar
 ```
 
-On se retrouve donc avec un fichier `file.txt.enc` qui semble être un fichier chiffré. Rien d'étonnant puisque l'on nous demande de retrouver une clé et un vecteur d'initialisation. En plus de cela, on dispose de deux exécutables : `generator.exe` et `encryptor.exe`.
+The result is a file called `file.txt.enc` which appears to be an encrypted file. This is not very surprising, since we are asked to retrieve a key and an initialization vector. In addition, we have two executables: `generator.exe` and `encryptor.exe`.
 
-A ce moment là on aurait pu procéder de plusieurs manières différentes mais pour ma part, j'ai simplement exécuté le générateur :
+At that point, there were several different ways of proceeding, but for my part, I simply ran the generator :
 
 ```sh
 wine generator.exe
 ```
 
-Cela nous produit deux fichiers : `dessktop.ini` et `deesktop.ini`. C'est une très bonne piste puisqu'on se rappelle avoir vu ces fichiers sur le bureau de `vboxuser`. On passe donc à l'extraction de ces deux fichiers dont l'un doit-être notre clé et l'autre le vecteur d'initialiation :
+This produces two files : `dessktop.ini` and `deesktop.ini`. This is a very good lead, since we remember seeing these files on `vboxuser`'s desktop. We now proceed to extract these two files, one of which should be our key and the other our initialization vector :
 
 ```sh
 sudo ~/Tools/volatility3-2.5.0/vol.py -f task.raw -o ./ windows.dumpfiles.DumpFiles --physaddr 0x3fcd2430
 sudo ~/Tools/volatility3-2.5.0/vol.py -f task.raw -o ./ windows.dumpfiles.DumpFiles --physaddr 0x3fd737b0
 ```
 
-Pour savoir lequel est la clé et lequel est le vecteur d'initialisation on aurait pû décompiler le générateur, ou bien simplement essayer à tour de rôle. On essaye donc le déchiffrement AES du chiffré suivant sur le [Cyberchef](https://cyberchef.org/) :
+To find out which is the key and which is the initialization vector, we could have decompiled the generator, or simply tried one after the other. Let's try AES decryption of the following cipher on [Cyberchef](https://cyberchef.org/) :
 
 ```md
 e609874a80d1b27efd46cc0a131a4dcd01a866f5e31a99ae56ed91d8c517
@@ -127,21 +127,21 @@ e609874a80d1b27efd46cc0a131a4dcd01a866f5e31a99ae56ed91d8c517
 bd92af6a
 ```
 
-Notre clé est `1b54ee420bd5b8396e15fc9fe01055f8` et le vecteur d'initialisation `e609874a80d1b27efd46cc0a131a4dcd`. En réglant le déchiffrement sur `CBC/NoPadding`, on obtient le texte clair suivant :
+Our key is `1b54ee420bd5b8396e15fc9fe01055f8` and the initialization vector is `e609874a80d1b27efd46cc0a131a4dcd`. Setting decryption to `CBC/NoPadding` yields the following plaintext :
 
 ```md 
 =À;K	õ®AlñÐ 0flag{82a30fadcfc07d634fbed1bffe4a2aa1}
 ```
 
-On a donc notre flag : `flag{82a30fadcfc07d634fbed1bffe4a2aa1}`.
+We have our flag : `flag{82a30fadcfc07d634fbed1bffe4a2aa1}`.
 
-## Cryptographie
+## Cryptography
 
 ### Random_key
 
-Cette épreuve de cryptographie tourne autour de deux fichiers.
+This cryptographic challenge lies around two files.
 
-Le premier est un script **Python** :
+The first one is a **Python** script :
 
 ```python
 #!/usr/bin/env python3
@@ -210,19 +210,19 @@ unsigned char *generate_256bits_encryption_key(unsigned char *recipient_name)
 }
 ```
 
-On se rend rapidement compte que pour chiffrer le flag, Alice a utilisé `FEDCBA9876543210` en vecteur d'initialisation ainsi qu'une clef générée par la fonction `generate_256bits_encryption_key(unsigned char *recipient_name)` avec comme paramètre : `Control_center`.
+We quickly realize that, to encrypt the flag, Alice has used `FEDCBA9876543210` as an initialization vector and a key generated by the function `generate_256bits_encryption_key(unsigned char *recipient_name)` with the parameter `Control_center`.
 
-Quand on regarde d'un peu plus près cette fonction, on voit que le procédé de création de la clef est le suivant :
-1. Initialisation de la clef avec des valeurs aléatoires sur les 32 octets de `key`
-2. Calcul du MD5 de `Control_center` et insertion dans les 16 premiers octets de `key`
-3. Insertion du temps de calcul du MD5 dans la case d'indice 8 de `key` (9ème case)
+If we take a closer look at this function, we can see that the key creation process is as follows :
+1. Initialization of the key with random values on the 32 bytes of `key`.
+2. Compute the MD5 of `Control_center` and insert it into the first 16 bytes of `key`.
+3. Insertion of the MD5 calculation time into the `key` index 8 cell (9th cell).
 
-Ce procédé présente un problème. Le calcul du MD5 étant plus rapide qu'une seconde, le caractère `O` sera toujours inséré dans `key[8]`. Étant donné que l'octet nul est le caractère de fin de chaîne en **C** et que la clé est récupérée comme telle par le script **Python**, la clé est donc la moitié du MD5 de `Control_center`.
+This procedure presents a problem. As the MD5 calculation is faster than one second, the `O` character will always be inserted in `key[8]`. Since the null byte is the **C** end-of-string character and the key is retrieved as such by the **Python** script, the key is therefore half the MD5 of `Control_center`.
 
 ```md
 echo -n "Control_center" | md5sum
 134abb7bd9d248a98d914daea81a8737  -
 ```
-On essaye donc le déchiffrement du flag sur notre [Cyberchef](https://cyberchef.org/) préféré avec comme vecteur d'initialisation `FEDCBA9876543210` et comme clef `134ABB7BD9D248A9` saisis en `UTF-8`. L'application de l'algorithme `CBC/NoPadding` nous donne le flag suivant : `ECW{random_key_7AgmwlBXo1tDhyqR}`.
+So we try to decrypt the flag on our favorite [Cyberchef](https://cyberchef.org/) with initialization vector `FEDCBA9876543210` and key `134ABB7BD9D248A9` entered in `UTF-8`. Applying the `CBC/NoPadding` algorithm gives us the following flag: `ECW{random_key_7AgmwlBXo1tDhyqR}`.
 
-Et voilà, challenge validé.
+And that's it, challenge validated.

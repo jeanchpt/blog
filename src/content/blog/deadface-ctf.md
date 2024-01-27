@@ -1,7 +1,7 @@
 ---
 author: Jean Chaput
 pubDatetime: 2023-10-24T21:36:00Z
-title: Write-up Deadface CTF
+title: Deadface CTF Write-up
 postSlug: deadface-ctf
 featured: false
 draft: false
@@ -9,36 +9,36 @@ tags:
   - ctf
   - write-up
 description:
-  Write-up de la Deadface CTF du 20 et 21 octobre 2023
+  Write-up for the Deadface CTF (October 20 and 21, 2023)
 ---
 
-La Deadface CTF s'est déroulée les 20 et 21 octobre 2023 et je propose ici une correction de quelques épreuves. D'autres corrections seront proposées par un coéquipier sur [ce site web](https://www.enzo-cadoni.fr).
+The Deadface CTF took place on October the 20 and 21, 2023. I propose here a correction for some challenges. Other one will be published by my team mate on [this website](https://www.enzo-cadoni.fr).
 
-## Table des matières
+## Table of contents
 
 ## Reverse-engineering
 
 ### Cereal Killer 05
 
-Pour cette épreuve nous avons affaire à un exécutable (`elf` ou `exe` au choix). On télécharge l'exécutable au format `elf` et on le rend exécutable :
+For this challenge, we have to deal with a binary file (we can choose between an `elf` or an `exe`). We download the binary in `elf` format and we make it executable :
 
 ```sh
 chmod +x re05.bin
 ```
 
-On peut maintenant le lancer voir ce qu'il se produit :
+Now we can lauch it to see what it does :
 
 ```sh
 ./re05.bin
 ```
 
-Sans surprise on nous demande un mot de passe. On quitte l'exécution et on utilise la commande `strings` pour afficher les chaînes de caractères imprimables dans le fichier :
+Without a surprise, we are asked for a password. So we left the execution and we try the `strings` command to show printable strings present in the file :
 
 ```sh
 strings re05.bin
 ```
 
-En remontant un peu dans le terminal on aperçoit le texte suivant :
+When we go up in the terminal, we can see the following text :
 
 ```md
 Dr. Geschichter, just because he is evil, doesn't mean he doesn't have a favorite cereal.
@@ -47,37 +47,37 @@ notf1aq{you-guessed-it---this-is-not-the-f1aq}
 Xen0M0rphMell0wz
 ```
 
-Il est probable que le mot de passe entré dans le terminal lors de l'exécution du programme soit comparé avec une chaîne de caractères et celle-ci pourrait bien être `Xen0M0rphMell0wz`. On relance donc le programme en entrant la chaîne précédemment trouvée lorsque le mot de passe est demandé. Bingo c'est le flag : `flag{XENO-DO-DO-DO-DO-DO-DOOOOO}`.
+It's likely that the password entered in the terminal when running the program will be compared with a character string, and this could well be `Xen0M0rphMell0wz`. So we restart the program, entering the previously found string when the password is requested. And here is the flag: `flag{XENO-DO-DO-DO-DO-DO-DOOOOO}`.
 
-## Steganographie
+## Steganography
 
 ### You've been ransomwared
 
-On nous propose dans cette épreuve de retrouver le pseudonyme de l'attaquant ayant effectué une attaque par rançongiciel. Pour cela, nous avons l'image suivante à disposition :
+In this test, we're asked to find the pseudonym of the attacker who carried out a ransomware attack. For this, we have the following image available :
 
 ![Rançongiciel](@assets/images/deadface-ctf-23/ransomwared.png)
 
-Lorsque l'on regarde l'image de très près, il semble que l'on puisse distinguer du texte tout en bas de celle-ci écrit en rouge sur fond rouge. Pour plus de lisibilité, on peut ouvrir l'image avec `Gimp` et jouer avec la balance des couleurs. Cela nous donne l'image suivante :
+If you look closely at the image, you can make out some text at the very bottom, written in red on a red background. For greater legibility, we can open the image with `Gimp` and play with the color balance. This gives us the following image :
 
 ![Rançongiciel](@assets/images/deadface-ctf-23/filtered-ransomware.png)
 
-En saisissant le texte mis en évidence dans un traducteur de binaire, on obtient :
+By entering the highlighted text into a binary translator, we obtain :
 
 ```md
 This ransomware brought to you by mirveal.
 ```
 
-On a donc le flag : `flag{mirveal}`
+So we have the flag : `flag{mirveal}`
 
 ## Traffic analysis
 
 ### Git rekt
 
-Ce défi propose d'analyser une capture réseau pour essayer de retrouver le mot de passe de l'utilisateur `spookyboi` qui se serait fait avoir par une campagne de phishing. On commence par ouvrir la capture avec `wireshark` et on se rend compte que celle-ci contient énormément de paquets et de protocoles différents. 
+This challenge involves analyzing a network capture in an attempt to recover the password of the user `spookyboi`, who may have been tricked by a phishing campaign. We start by opening the capture with `wireshark` and realize that it contains a huge number of different packets and protocols. 
 
-Puisque le mot de passe recherché aurait été envoyé en réponse à une campagne de phishing, il est probable que cela se soit produit via une interface web alors on peut essayer de filtrer les paquets `HTTP` ainsi que la méthode `POST`. Cela se fait avec le filtre `http.request.method == "POST"`.
+Since the password we're looking for was sent in response to a phishing campaign, it's likely to have been sent via a web interface, so we can try filtering the `HTTP` packets as well as the `POST` method. This is done with the filter `http.request.method == "POST"`.
 
-Il ne reste plus qu'un seul paquet dans la liste et quand on l'exporte au format texte  on a le résultat suivant :
+Only one packet remains in the list, and when exported in text format we get the following result :
 
 ```md
 No.     Time           Source                Destination           Protocol Length Info
@@ -106,35 +106,35 @@ HTML Form URL Encoded: application/x-www-form-urlencoded
     Form item: "timestamp_secret" = "701122f4b577941e1c787414ea0775e8cd9e974f8c5b46eceff028a721e9d713"
 ```
 
-On voit ici clairement le mot de passe transmit et on a par conséquent le flag suivant : `flag{SpectralSecrets#2023}`
+Here we can clearly see the password transmitted and therefore we have the flag : `flag{SpectralSecrets#2023}`
 
 ### Creepy crawling
 
-Pour cette épreuve, on démarre avec la capture réseau `PCAP02.pcapng`. On peut simplement commencer par en afficher le contenu avec `tshark` :
+For this challenge, we start with the network capture `PCAP02.pcapng`. We can simply start by displaying its contents with `tshark` :
 
 ```sh
 tshark -r PCAP02.pcapng
 ```
 
-On voit alors qu'il y a beaucoup de contenu et différents protocoles. Par curiosité on peut compter le nombre de lignes :
+You can see that there's a lot of content and different protocols. For the sake of curiosity, we can count the number of lines :
 
 ```sh
 tshark -r PCAP02.pcapng | wc -l
 ```
 
-Cela nous affiche 13631 lignes, ce qui fait effectivement beaucoup. Pour simplifier sachant que l'on recherche une version d'SSH on peut filtrer la sortie avec l'option `-Y` de `tshark` :
+This displays 13631 lines, which is indeed a lot. To simplify, knowing that we're looking for an SSH version, we can filter the output using the `-Y` option in `tshark` :
 
 ```sh
 tshark -r PCAP02.pcapng -Y "ssh" | wc -l
 ```
 
-Cela fait encore 991 paquets. De là on pourrait directement commencer à regarder à la main pour voir si quelque chose nous saute aux yeux mais puisque l'on sait que l'on recherche une version de protocole sous la forme `SSH-...`, on peut filtrer la sortie de la commande précédente avec `grep` :
+That's another 991 packets. From here we could directly start looking by hand to see if anything jumps out at us, but since we know we're looking for a protocol version in the form `SSH-...`, we can filter the output of the previous command with `grep` :
 
 ```sh
 tshark -r PCAP02.pcapng -Y "ssh" | grep "SSH-" | wc -l
 ```
 
-Cette fois-ci, on tombe à 141 paquets. Regardons un peu ce qu'il y a dans la capture :
+This time, we're down to 141 packages. Let's take a look at what's in the capture :
 
 ```md
 ...
@@ -160,15 +160,15 @@ Cette fois-ci, on tombe à 141 paquets. Regardons un peu ce qu'il y a dans la ca
 ...
 ```
 
-On reconnaît là le format que l'on était en train de rechercher et il se pourrait bien que `SSH-2.0-9.29 FlowSsh: Bitvise SSH Server (WinSSHD) 9.29` soit notre flag. À ce moment là on est sûr de rien mais on peut essayer `flag{SSH-2.0-9.29 FlowSsh: Bitvise SSH Server (WinSSHD) 9.29}`.
+We recognize the format we were looking for and it could well be that `SSH-2.0-9.29 FlowSsh: Bitvise SSH Server (WinSSHD) 9.29` is our flag. At this point we can't be sure, but we can try `flag{SSH-2.0-9.29 FlowSsh: Bitvise SSH Server (WinSSHD) 9.29}`.
 
-Et hop ! Défi validé.
+It works ! Challenge validated.
 
 ## Forensics
 
 ### What's the wallet
 
-Ce défi commence avec un fichier `Bitcoin.txt` où on nous demande de retrouver l'addresse du porte monnaie. Lorsque l'on parcourt le fichier, une fonction attire l'oeil :
+This challenge starts with a `Bitcoin.txt` file where we're asked to find the wallet's address. As we go through the file, one function catches our eye :
 
 ```js
 function Store-BtcWalletAddress {
@@ -176,22 +176,22 @@ function Store-BtcWalletAddress {
 }
 ```
 
-Il paraît évident à ce moment là que l'on récupère l'addresse du porte monnaie en la convertissant depuis la base 64. On met donc la chaîne de caractères `bjMzaGE1bm96aXhlNnJyZzcxa2d3eWlubWt1c3gy` dans un convertisseur de base 64 et on obtient le contenu du flag. On peut donc valider ce défi avec le flag : `flag{n33ha5nozixe6rrg71kgwyinmkusx2}`.
+At this point, it seems obvious that the wallet's address should be recovered by converting it from base 64. So we put the string `bjMzaGE1bm96aXhlNnJyZzcxa2d3eWlubWt1c3gy` into a base-64 converter and obtain the contents of the flag. We can therefore validate this challenge with the flag: `flag{n33ha5nozixe6rrg71kgwyinmkusx2}`.
 
 ### Host busters 1
 
-Pour cette épreuve nous disposons d'un acces SSH à `vim@gh0st404.deadface.io` avec le mot de passe `letmevim`. Lorsque l'on se connecte, il semble que l'on ne se retrouve pas dans un shell classique mais plûtot dans un `vim`. Si l'on essaye simplement d'en sortir avec la commande `:q`, on se déconnecte du SSH. 
+For this challenge, we have SSH access to `vim@gh0st404.deadface.io` with the password `letmevim`. When we connect, it seems that we're not in a classic shell, but rather in a `vim`. If you simply try to exit with the command `:q`, you'll disconnect from SSH. 
 
-Il se trouve que `vim` s'exécute dans un terminal ou il peut exécuter les commandes que l'utilisateur lui donne avec la commande `:!` suivi de n'importe quelle instruction. On peut donc par exemple taper `:!bash`.
+As it happens, `vim` runs in a terminal where it can execute commands given by the user with the command `:!` followed by any instruction. So, for example, you could type `:!bash`.
 
-Cela nous ouvre un shell bash qui se trouve être directement dans le répertoire de l'utilisateur `vim` ou l'on était censé chercher quelque chose. On liste donc le contenu du répertoire avec `ls` et on découvre qu'un fichier `hostbusters1.txt` s'y trouve. Le flag est donc `flag{esc4P3_fr0m_th3_V1M}`.
+This opens a bash shell which happens to be directly in the user's `vim` directory, where we were supposed to be looking for something. So we list the content of the directory with `ls` and discover that a `hostbusters1.txt` file is there. The flag is therefore `flag{esc4P3_fr0m_th3_V1M}`.
 
 ### Tin balloon
 
-Cette fois-ci on récupère une archive contenant un fichier `Untitlednosubject.docx` protégé par mot de passe ainsi qu'un fichier MP3. En écoutant le MP3 pendant que l'on essaye de trouver une solution pour le mot de passe, on se rend compte qu'il y a des sons étranges autour de 3 minutes 15. 
+This time we retrieve an archive containing a password-protected `Untitlednosubject.docx` file and an MP3 file. Listening to the MP3 while we try to find a solution for the password, we realize that there are some strange sounds around 3 minutes 15. 
 
-On ouvre donc le fichier avec `audacity` et on affiche le spectrogramme avant de zoomer sur la partie qui nous intéresse. On découvre alors ceci :
+So we open the file with `audacity` and display the spectrogram before zooming in on the part we're interested in. This is what we discover :
 
 ![Spectrogramme](@assets/images/deadface-ctf-23/spectrogram.png)
 
-Il s'agit évidemment du mot de passe du fichier ou se trouve le nom de l'exécutable. On en déduit le flag : `flag{Wh1t3_N01Z3.exe}`
+This is obviously the password for the file containing the executable's name. The flag is : `flag{Wh1t3_N01Z3.exe}`
