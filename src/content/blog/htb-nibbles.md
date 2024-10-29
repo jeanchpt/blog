@@ -50,7 +50,7 @@ At the bottom, we can see the following:
 
 Seems to be an interesting page to navigate, let's see if it exists:
 
-![[HTB/Boxes/Easy/Nibbles - FINISHED/Files/homepage.png]]
+![Homepage](@assets/images/htb-nibbles/homepage.png)
 
 We can see in the bottom-right corner `Powered by Nibbleblog` and by searching the web, we can find the [Nibbleblog CMS](https://github.com/dignajar/nibbleblog).
 
@@ -122,7 +122,8 @@ This displays the following output :
 ```markdown
 -------------------------------------------------------- ---------------------
  Exploit Title                                          |  Path
--------------------------------------------------------- ---------------------Nibbleblog 4.0.3 - Arbitrary File Upload (Metasploit)   | php/remote/38489.rb
+-------------------------------------------------------- ---------------------
+Nibbleblog 4.0.3 - Arbitrary File Upload (Metasploit)   | php/remote/38489.rb
 -------------------------------------------------------- ---------------------
 ```
 
