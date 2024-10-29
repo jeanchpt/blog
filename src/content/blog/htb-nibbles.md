@@ -48,9 +48,7 @@ At the bottom, we can see the following:
 <!-- /nibbleblog/ directory. Nothing interesting here! -->
 ```
 
-Seems to be an interesting page to navigate, let's see if it exists:
-
-![Homepage](@assets/images/htb-nibbles/homepage.png)
+Seems to be an interesting page to navigate, let's see if it exists.
 
 We can see in the bottom-right corner `Powered by Nibbleblog` and by searching the web, we can find the [Nibbleblog CMS](https://github.com/dignajar/nibbleblog).
 
