@@ -61,7 +61,7 @@ All blog posts are stored in `src/content/blog` directory.
 
 ## License
 
-Licensed under the MIT License, Copyright © 2024
+Licensed under the MIT License, Copyright © 2026
 
 ---
 
